@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/casionstyle.css" />
+    <link rel="shortcut icon" href="img/" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>document.documentElement.className = "js"; var supportsCssVars = function () { var e, t = document.createElement("style"); return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e }; supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+    <title>登入</title>
+</head>
+
+<body class="demo-3">
+    <main class="content2">
+        <h2 class="content__title">Welcome</h2>
+
+        <div class="logcard">
+            <h1 class="mt2">登入</h1>
+            <p class="logintext">帳號</p>
+            <input type="text" name="userName" class="form-control-index2 mt2" placeholder="帳號">
+            <p class="logintext">密碼</p>
+            <input type="password" name="userPW" class="form-control-index2" id="inputPassword4" placeholder="密碼">
+            <a href="register.html"><button class="logoin-btn mt15"> 註冊</button></a>
+            <button class="logoin-btn" id="loginbtn"> 登入</button>
+        </div>
+    </main>
+    
+</body>
+<script src="js/demo.js"></script>
+<script src="js/device.js"></script>
+<script>
+    $.ajax({
+        type: 'GET',
+        url: 'api/ip.php',
+        contentType: "application/json; charset=utf-8",
+        success: function (result) {
+            if (result.status === 'false') {
+                window.location.href = "/404.html"
+            }
+        }
+    });
+    $('#loginbtn').click(function () {
+        const username = $("input[name='userName']").val();
+        const password = $("input[name='userPW']").val();
+        const userdata = {
+            type: 'login',
+            user: username,
+            password: password
+        };
+
+        if (username !== "" && password !== "") {
+            $.ajax({
+                type: 'POST',
+                url: 'api/login.php',
+                data: JSON.stringify(userdata),
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.status === 'true') {
+                        window.location.href = "/"
+                    } else {
+                        alert("帳號或密碼錯誤!請重新輸入")
+                    }
+                }
+            });
+        } else {
+            alert("未輸入完成!")
+        }
+    });
+</script>
+
+</html>

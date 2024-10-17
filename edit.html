@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" style=" background-color: #A9E7DA;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/casionstyle.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="shortcut icon" href="img/" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>document.documentElement.className = "js"; var supportsCssVars = function () { var e, t = document.createElement("style"); return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e }; supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+    <title>個人資料修改</title>
+</head>
+
+<body class="demo-3">
+    <input type="checkbox" id="active" hidden>
+    <section class="username bcolor">
+        <img id="output2" src="img/user-circle.webp" class="output2">
+        <div class="">
+          <p></p>
+          <button class="back_btn f18 h30p" id="loginout">登出</button>
+        </div>
+    </section>
+    <label for="active" class="menu-btn arrow1"><i class="fas fa-bars "></i></label>
+    <div class="wrapper">
+        <ul>
+            <li><a href="/">首頁</a></li>
+            <li><a href="personal-infor.html">個人資料</a></li>
+        </ul>
+    </div>
+    <div class="registercard">
+        <h1 class="mt2">修改資料
+            <a href="personal-infor.html"><button class="back_btn">BACK</button></a>
+        </h1>
+        <ul class="dflex">
+            <li class="col-per-text">
+                <label class="register-text">姓名</label>
+                <input type="text" class="form-control-reg mt2" placeholder="姓名" name="realName">
+            </li>
+            <li class="col-per-text">
+                <section class="editCategory">
+                    <label class="form-label register-text">部門</label>
+                    <span class="form-control-reg selectcategory"></span>
+                </section>
+                <section>
+                    <label class="form-label register-text">時段</label>
+                    <select class="form-control-reg selectPeriod">
+                        <option>09:00 ~ 18:00</option>
+                        <option>13:00 ~ 22:00</option>
+                        <option>17:00 ~ 02:00</option>
+                    </select>
+                </section>
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">帳號</label>
+                <input type="text" class="form-control-reg mt2" placeholder="帳號" name="account">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">E-mail</label>
+                <input type="email" class="form-control-reg mt2" placeholder="E-mail" name="email">
+            </li>
+            <!-- <li class="col-per-text">
+                <label class="register-text">電話</label>
+                <input type="text" class="form-control-reg mt2" placeholder="電話" name="phoneNumber">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">備用電話</label>
+                <input type="text" class="form-control-reg mt2" placeholder="備用電話" name="backupNumber">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">緊急聯絡人</label>
+                <input type="text" class="form-control-reg mt2" placeholder="緊急聯絡人" name="EmergencyContact">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">聯絡人電話</label>
+                <input type="text" class="form-control-reg mt2" placeholder="聯絡人電話" name="contactNumber">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">地址</label>
+                <input type="text" class="form-control-reg mt2" placeholder="地址" name="address">
+            </li> -->
+            <!-- <li class="col-per-text">
+                <label class="mr25p">頭貼照50x50</label>
+                <input type="file" accept="image/*" onchange="loadFile(event)" name="avatar">
+            </li> -->
+            <!-- <li class="col-per-text">
+                <img id="output" />
+            </li> -->
+            <button class="logoin-btn mt15">確定修改</button>
+        </ul>
+    </div>
+
+</body>
+<script src="js/demo.js"></script>
+<script src="js/loginverify.js"></script>
+<!-- <script src="js/perlin.js"></script> -->
+<!-- <script src="js/demo3.js"></script> -->
+<script>
+    var loadFile = function (event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+<script>
+    $.ajax({
+        type: 'GET',
+        url: 'api/memberdata.php',
+        data: {
+            type: 'member_data'
+        },
+        contentType: "application/json; charset=utf-8",
+        success: (result) => {
+            $('.username p').html(`Hi ~ ${result['name']} 您好 !`);
+            let period_array = { 'morning': '09:00 ~ 18:00', 'afternoon': '13:00 ~ 22:00', 'night': '17:00 ~ 02:00' }
+            for (var key in period_array) {
+                if (result["period"] == key) {
+                    period = period_array[key];
+                }
+            }
+            $("input[name='realName']").val(`${result["name"]}`);
+            $(".selectcategory").text(`${result["category"]}`);
+            $(".selectPeriod").val(`${period}`);
+            $("input[name='account']").val(`${result["account"]}`);
+            $("input[name='email']").val(`${result["email"]}`)
+            // $("input[name='phoneNumber']").val(`${result["phonenumber"]}`);
+            // $("input[name='backupNumber']").val(`${result["backupPhone"]}`);
+            // $("input[name='EmergencyContact']").val(`${result["EmergencyContact"]}`);
+            // $("input[name='contactNumber']").val(`${result["contactNumber"]}`);
+            // $("input[name='address']").val(`${result["address"]}`);
+
+            // 送出
+            $('.logoin-btn').click(function () {
+                realName = $("input[name='realName']").val();
+                account = $("input[name='account']").val();
+                if ($("input[name='email']").val().indexOf("@") === -1) {
+                    email = ''
+                } else {
+                    email = $("input[name='email']").val()
+                }
+                // phoneNumber = $("input[name='phoneNumber']").val();
+                // backupNumber = $("input[name='backupNumber']").val();
+                // EmergencyContact = $("input[name='EmergencyContact']").val();
+                // contactNumber = $("input[name='contactNumber']").val();
+                // address = $("input[name='address']").val();
+                period = $(".selectPeriod").val();
+
+                editData = {
+                    type: 'edit',
+                    realName: realName,
+                    account: account,
+                    period: period,
+                    email: email
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: 'api/memberdata.php',
+                    data: JSON.stringify(editData),
+                    contentType: "application/json; charset=utf-8",
+                    success: (result) => {
+                        if (result.status === 'true') {
+                            alert('編輯成功!');
+                        } else {
+                            alert("無變更!");
+                        }
+                        window.location.href = "personal-infor.html";
+                    }
+                });
+            })
+        }
+    });
+</script>
+
+</html>

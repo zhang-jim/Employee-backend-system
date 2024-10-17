@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" style=" background-color: #A9E7DA;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/casionstyle.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <link rel="shortcut icon" href="img/" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>個人資料</title>
+</head>
+
+<body class="demo-3">
+    <input type="checkbox" id="active" hidden>
+    <section class="username bcolor">
+        <img id="output2" src="img/user-circle.webp" class="output2">
+        <div class="">
+          <p></p>
+          <button class="back_btn f18 h30p" id="loginout">登出</button>
+        </div>
+    </section>
+    <label for="active" class="menu-btn arrow1"><i class="fas fa-bars "></i></label>
+    <div class="wrapper">
+        <ul>
+            <li><a href="/">首頁</a></li>
+            <li><a href="personal-infor.html">個人資料</a></li>
+        </ul>
+    </div>
+
+    <div class="registercard">
+        <h1 class="mt2">個人資料
+            <a href="/"><button class="back_btn">BACK</button></a>
+        </h1>
+        <ul class="dflex"></ul>
+    </div>
+</body>
+<script src="js/demo.js"></script>
+<script src="js/loginverify.js"></script>
+<script>
+    var loadFile = function (event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+
+<script>
+    $.ajax({
+        type: 'GET',
+        url: 'api/memberdata.php',
+        data: {
+            type: 'member_data'
+        },
+        contentType: "application/json; charset=utf-8",
+        success: (result) => {
+            $('.username p').html(`Hi ~ ${result['name']} 您好 !`);
+            labelArr = ['姓名', '部門', '帳號', 'E-mail', '特休天數']
+            resultArr = ['name', 'category', 'account', 'email', 'annualLeave']
+            for (let i = 0; i < labelArr.length; i++) {
+                $('.dflex').append(
+                    `<li class="col-per-text">
+                        <label class="register-text">${labelArr[i]}</label>
+                        <p class="disinline f20">${result[resultArr[i]]}</p>
+                    </li>`)
+            }
+            $('.dflex .col-per-text').eq(1).html(`
+                <section>
+                    <label class="register-text">部門</label>
+                    <p class="disinline f20">${result['category']}</p>    
+                </section>
+                <section>
+                    <label class="register-text">時段</label>
+                    <p class="disinline f20">${result['period']}</p>    
+                </section>
+            `)
+            $('.dflex').append(`<a href="edit.html" class="w100"> <button class="logoin-btn mt15">修改</button></a>`)
+        }
+    });
+</script>
+
+</html>

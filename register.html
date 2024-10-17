@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" style=" background-color: #A9E7DA;">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Barlow:400,500,700|Poppins:600" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/casionstyle.css" />
+    <link rel="shortcut icon" href="img/" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>document.documentElement.className = "js"; var supportsCssVars = function () { var e, t = document.createElement("style"); return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e }; supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+    <title>註冊</title>
+</head>
+
+<body class="demo-3">
+    <div class="registercard">
+        <section class="w100">
+            <h1 class="mt2">註冊
+                <a href="login.html"><button class="back_btn">BACK</button></a>
+            </h1>
+        </section>
+        <ul class="dflex">
+            <li class="col-per-text">
+                <label class="register-text">*姓名</label>
+                <input type="text" name="realName" class="form-control-reg mt2" placeholder="姓名(英文名稱)">
+            </li>
+            <li class="col-per-text">
+                <section>
+                    <label for="inputState" class="form-label register-text">*部門</label>
+                    <select class="form-control-reg selectcategory">
+                        <option>工程部</option>
+                        <option>會計部</option>
+                        <option>美術部</option>
+                        <option>客服部-早</option>
+                        <option>客服部-晚</option>
+                        <option>客服部-大夜</option>
+                        <option>行銷部</option>
+                    </select>
+                </section>
+                <section>
+                    <label for="inputState" class="form-label register-text">*時段</label>
+                    <select class="form-control-reg selectPeriod">
+                        <option>09:00 ~ 18:00</option>
+                        <option>13:00 ~ 22:00</option>
+                        <option>17:00 ~ 02:00</option>
+                    </select>
+                </section>
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">*帳號</label>
+                <input type="text" name="account" class="form-control-reg mt2" placeholder="帳號">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">*密碼</label>
+                <input type="password" name="password" class="form-control-reg mt2" placeholder="密碼">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">*確認密碼</label>
+                <input type="password" name="checkPassword" class="form-control-reg mt2" placeholder="確認密碼">
+            </li>
+            <li class="col-per-text">
+                <label class="register-text">E-mail</label>
+                <input type="email" name="email" class="form-control-reg mt2" placeholder="E-mail">
+            </li>
+            <button type="submit" class="logoin-btn mt15"> 註冊</button>
+        </ul>
+    </div>
+</body>
+<script src="js/demo.js"></script>
+<script>
+    $('.logoin-btn').click(function () {
+        realName = $("input[name='realName']").val();
+        account = $("input[name='account']").val();
+        password = $("input[name='password']").val();
+        checkPassword = $("input[name='checkPassword']").val();
+        if ($("input[name='email']").val().indexOf("@") === -1) {
+            email = ''
+        } else {
+            email = $("input[name='email']").val()
+        }
+        category = $(".selectcategory").val();
+        period = $(".selectPeriod").val();
+
+        registerData = {
+            type: 'register',
+            realName: realName,
+            account: account,
+            password: password,
+            category: category,
+            period: period,
+            email: email
+        }
+        if (password === checkPassword) {
+            $.ajax({
+                type: 'POST',
+                url: 'api/memberdata.php',
+                data: JSON.stringify(registerData),
+                contentType: "application/json; charset=utf-8",
+                success: (result) => {
+                    alert(result.message)
+                    if (result.status === 'true') {
+                        setTimeout(function () { window.location.href = "login.html" }, 3000);
+                    }
+                }
+            });
+        } else {
+            alert("密碼不相同!")
+        }
+    })
+
+</script>
+
+</html>

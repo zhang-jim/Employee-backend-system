@@ -1,0 +1,5 @@
+# 忽略目錄內所有內容
+/upload/
+# 忽略指定檔案
+auto.txt
+backend_system.sql
